@@ -35,11 +35,10 @@ static long DoPart2(long v)
     var idString = v.ToString();
     var len = v.ToString().Length;
 
-    // max len of the numbers is 10, so max partlen is 5
-    for (var partlen = 1; partlen <= 5; partlen++)
+    for (int partlen = 1; partlen <= len/2; partlen++)
     {
         if (len % partlen != 0 || len / partlen < 2) continue; // not divisible or too few parts
-        // leverage LINQ to chunk the string and find number of distinct chunks
+        // leverage LINQ to chunk the string and find count of distinct chunks
         if (idString.Chunk(partlen).Select(x => new string(x)).Distinct().Count() == 1) // all parts are equal
             return v;
     }
