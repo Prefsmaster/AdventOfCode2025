@@ -16,7 +16,7 @@ foreach (var idRange in idRanges)
     }
 }
 Console.WriteLine($"Answer1: {answer1}");
-Console.WriteLine($"Answer1: {answer2}");
+Console.WriteLine($"Answer2: {answer2}");
 
 static long DoPart1(long v)
 {
@@ -39,17 +39,20 @@ static long DoPart2(long v)
     for (var partlen = 1; partlen <= 5; partlen++)
     {
         if (len % partlen != 0 || len / partlen < 2) continue; // not divisible or too few parts
-        // leverage LINQ to get distinct chunks and count them
-        if (GetStringChunks(idString, partlen).Distinct().Count() == 1) // all parts are equal
+        // leverage LINQ to chunk the string and find number of distinct chunks
+        if (idString.Chunk(partlen).Select(x => new string(x)).Distinct().Count() == 1) // all parts are equal
             return v;
     }
     return 0L;
 }
-static IEnumerable<string> GetStringChunks(string str, int chunkSize) 
-{
-    // strings in this problem are short and contain max 10 chunks, so this could have been done without 'yield'.
-    // But hey.. :-) now we have a reusable function.
-    for (int i = 0; i < str.Length; i += chunkSize)
-        yield return str.Substring(i, chunkSize);
-}
+
+// I first used this one to chunk, but since the strings are small I 'optimised' it away 
+// into the string.Chunk etc line above.
+//static IEnumerable<string> GetStringChunks(string str, int chunkSize) 
+//{
+//    // strings in this problem are short and contain max 10 chunks, so this could have been done without 'yield'.
+//    // But hey.. :-) now we have a reusable function.
+//    for (int i = 0; i < str.Length; i += chunkSize)
+//        yield return str.Substring(i, chunkSize);
+//}
 
