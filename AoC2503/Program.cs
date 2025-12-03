@@ -50,7 +50,7 @@ static ulong findHighestNJoltage(string batteryBank, int N)
     }
     // convert selected digits to ulong
     // LINQ is so nice for this kind of stuff :-)
-    return batteryBank.Where((c, j) => selectedDigits[j]).Aggregate(0UL, (acc, c) => acc * 10UL + (ulong)(c - '0'));
+    return batteryBank.Where((c, j) => selectedDigits[j]).Aggregate(0UL, (acc, c) => acc * 10 + c - '0');
 }
 
 static int GetHighestJoltageIndex(string batteryBank)
