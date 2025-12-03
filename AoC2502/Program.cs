@@ -15,8 +15,7 @@ foreach (var idRange in idRanges)
         answer2 += DoPart2(v);
     }
 }
-Console.WriteLine($"Answer1: {answer1}");
-Console.WriteLine($"Answer2: {answer2}");
+Console.WriteLine($"Answer1: {answer1}\nAnswer2: {answer2}");
 
 static long DoPart1(long v)
 {
