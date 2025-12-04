@@ -25,8 +25,7 @@ static ulong findHighestNJoltage(string batteryBank, int N)
 {
     var selectedDigits = new bool[batteryBank.Length];
 
-    // find most significant unselected, highest digit in least significant available section
-    // repeat N times
+    // N times: find and add most significant unselected, highest digit in least significant available section
     for (var digit = 0; digit < N; digit++)
     {
         // find start of least significant available section
