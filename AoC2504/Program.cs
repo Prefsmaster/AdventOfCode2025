@@ -51,6 +51,8 @@ do
                 // to speed stuff up, during a pass we can immediately remove rolls that have less than 4 neighbours!
                 // this is possible because removing a roll will always make things 'better' for its neighbours!
                 // This insight reduces the 9 passes from the example to only 4 :-)
+                // Now the phrasing "here is ONE WAY you could remove as many rolls of paper as possible"
+                // in the description of the example makes more sense!
                 rollPositions[y, x] = 2;
                 removedRolls++;
             }
