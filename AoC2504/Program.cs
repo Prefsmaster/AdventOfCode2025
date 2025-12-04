@@ -1,5 +1,5 @@
 ﻿// Aoc Day 4: Roll the Paper
-var paperGrid = File.ReadAllLines("test.txt");
+var paperGrid = File.ReadAllLines("input.txt");
 var H = paperGrid.Length;
 var W = paperGrid[0].Length;
 
@@ -7,7 +7,7 @@ var rollPositions = new byte[H+2, W+2];
 for (var y = 0; y < H; y++)
     for (var x = 0; x < W; x++)
     {
-        // 0 = no roll, 1 = roll present, 2 = roll removed
+        // 0 = no roll, 1 = roll present
         rollPositions[y + 1, x + 1] = (byte)((paperGrid[y][x] == '@') ? 1 : 0);
     }
 
@@ -39,7 +39,7 @@ do
     for (var y = 1; y < H + 1; y++)
         for (var x = 1; x < W + 1; x++)
         {
-            if (rollPositions[y, x] != 1) continue;
+            if (rollPositions[y, x] == 0) continue;
 
             var neighbours = 0;
             for (var dy = -1; dy <= 1; dy++)
@@ -53,7 +53,7 @@ do
                 // This insight reduces the 9 passes from the example to only 4 :-)
                 // Now the phrasing "here is ONE WAY you could remove as many rolls of paper as possible"
                 // in the description of the example makes more sense!
-                rollPositions[y, x] = 2;
+                rollPositions[y, x] = 0;
                 removedRolls++;
             }
         }
