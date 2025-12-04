@@ -1,11 +1,15 @@
 ﻿// Aoc Day 4: Roll the Paper
 var paperGrid = File.ReadAllLines("input.txt");
-var H = paperGrid.Length;
-var W = paperGrid[0].Length;
+var gridH = paperGrid.Length;
+var gridW = paperGrid[0].Length;
 
-var rollPositions = new byte[H+2, W+2];
-for (var y = 0; y < H; y++)
-    for (var x = 0; x < W; x++)
+// display start situation
+Console.WriteLine("before:");
+foreach (var paper in paperGrid) Console.WriteLine(paper);
+
+var rollPositions = new byte[gridH+2, gridW+2];
+for (var y = 0; y < gridH; y++)
+    for (var x = 0; x < gridW; x++)
     {
         // 0 = no roll, 1 = roll present
         rollPositions[y + 1, x + 1] = (byte)((paperGrid[y][x] == '@') ? 1 : 0);
@@ -13,8 +17,8 @@ for (var y = 0; y < H; y++)
 
 // part 1
 var accessibleRolls = 0L;
-for (var y = 1; y < H + 1; y++)
-    for (var x = 1; x < W + 1; x++)
+for (var y = 1; y < gridH + 1; y++)
+    for (var x = 1; x < gridW + 1; x++)
     {
         if (rollPositions[y, x] == 0) continue;
 
@@ -36,8 +40,8 @@ do
 {
     iterations++;
     removedRolls = 0;
-    for (var y = 1; y < H + 1; y++)
-        for (var x = 1; x < W + 1; x++)
+    for (var y = 1; y < gridH + 1; y++)
+        for (var x = 1; x < gridW + 1; x++)
         {
             if (rollPositions[y, x] == 0) continue;
 
@@ -51,8 +55,8 @@ do
                 // to speed stuff up, during a pass we can immediately remove rolls that have less than 4 neighbours!
                 // this is possible because removing a roll will always make things 'better' for its neighbours!
                 // This insight reduces the 9 passes from the example to only 4 :-)
-                // Now the phrasing "here is ONE WAY you could remove as many rolls of paper as possible"
-                // in the description of the example makes more sense!
+                // Now the phrasing in the description: "here is ONE WAY you could remove as many rolls of paper as possible"
+                // makes more sense!
                 rollPositions[y, x] = 0;
                 removedRolls++;
             }
@@ -60,4 +64,15 @@ do
     totalRemovedRolls += removedRolls;
 } while (removedRolls > 0);
 
-Console.WriteLine($"Part 2: {totalRemovedRolls} in {iterations} passes!");
+Console.WriteLine($"Part 2: {totalRemovedRolls} in {iterations} passes.");
+
+// display end situation
+Console.WriteLine("after:");
+for (var y = 1; y < gridH + 1; y++)
+{
+    for (var x = 1; x < gridW + 1; x++)
+    {
+        Console.Write(rollPositions[y, x]==1?'@':'.');
+    }
+    Console.WriteLine();
+}
