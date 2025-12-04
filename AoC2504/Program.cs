@@ -48,10 +48,10 @@ do
 
             if (neighbours < 4)
             {
-                rollPositions[y, x] = 2;
                 // to speed stuff up, during a pass we can immediately remove rolls that have less than 4 neighbours!
                 // this is possible because removing a roll will always make things 'better' for its neighbours!
-                // This approach takes 4 passes instead of the 9 uesed in the example :-)
+                // This insight reduces the 9 passes from the example to only 4 :-)
+                rollPositions[y, x] = 2;
                 removedRolls++;
             }
         }
