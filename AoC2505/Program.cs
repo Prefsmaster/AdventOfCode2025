@@ -33,7 +33,7 @@ while (!string.IsNullOrEmpty(line = file.ReadLine()))
     rangeDelimiters.Add(new(ulong.Parse(parts[0]), 'B'));
     rangeDelimiters.Add(new(ulong.Parse(parts[1]), 'E'));
 }
-// Sort the values. Soort order is Item1, Item2
+// Sort the values. Sort order is first on Item1, then Item2
 // 1234,'B' will end up before 1234,'E'
 rangeDelimiters.Sort();
 
@@ -41,7 +41,8 @@ var nestlevel = 0;
 var freshIDsCount = 0UL;
 ulong rangestart = 0;
 // loop through the list. nestlevel 0 indicates start of a range.
-// When encountering a new 'B' increment nesting level: this range starts inside another, so startof curren range does not change.
+// When encountering a new 'B' increment nesting level. If level > 1 this range starts inside another, so startof current range does not change.
+// if level == 1 then remember start of range.
 // When encountering an 'E', decrement nesting level if level == 0, it ends a unique range. Add it to the total.
 // If level != 0 the 'E' closed an embedded range, so keep going!
 for (int i = 0; i < rangeDelimiters.Count; i++)
