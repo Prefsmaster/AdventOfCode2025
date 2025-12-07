@@ -1,10 +1,8 @@
-﻿const string fileName = "test.txt";
-
-var lines = File.ReadAllLines(fileName);
+﻿// AoC Day 6: cephalopod homework
+var lines = File.ReadAllLines("input.txt");
 var ops = lines.Length-1;
 
 //Part 1
-
 var parametersLists = new List<ulong>[ops]; 
 for (int row =0;row< ops; row++)
 {
@@ -32,7 +30,7 @@ do
 {
     var end = index;
 
-    // find operator and width of sub calculation.
+    // find operator and width of sub-calculation.
     while (lines[ops][index] == ' ')
         index--;
 
