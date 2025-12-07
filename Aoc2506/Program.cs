@@ -3,11 +3,13 @@ var lines = File.ReadAllLines("input.txt");
 var ops = lines.Length-1;
 
 //Part 1
+// convert input to an array of parameter lists
 var parametersLists = new List<ulong>[ops]; 
 for (int row =0;row< ops; row++)
 {
     parametersLists[row] = lines[row].Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(x => ulong.Parse(x)).ToList();
 }
+// create list of operators
 var op = lines[ops].Split(' ').Where(x => !string.IsNullOrEmpty(x)).ToList();
 
 var sum = 0UL;
@@ -25,7 +27,7 @@ Console.WriteLine($"Part1: {sum}");
 
 // Part 2
 var index = lines[ops].Length-1;
-sum = 0UL;
+var sum2 = 0UL;
 do
 {
     var end = index;
@@ -52,7 +54,7 @@ do
         else
             subresult *= (ulong)parameter;
     }
-    sum += subresult;
+    sum2 += subresult;
     index -= 2;
 } while (index > 0);
-Console.WriteLine($"Part2: {sum}");
+Console.WriteLine($"Part2: {sum2}");
