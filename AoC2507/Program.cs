@@ -11,13 +11,16 @@ foreach (var line in lines)
 // part2: remember how many paths lead to each node
 var pathsleadingtoposition = new ulong[lineLen];
 
+// initialisation. 
 // place a | under the S
 for (var i = 0; i < lineLen; i++)
 {
     if (characterarray[0][i] == 'S')
     {
+        // Part1: starting beam
         characterarray[1][i] = '|';
-        pathsleadingtoposition[i]++;
+        // Part2: only one path leads here...
+        pathsleadingtoposition[i] = 1;
         break;
     }
 }
@@ -32,17 +35,18 @@ for (var line = 2; line<characterarray.Count; line += 2)
         {
             if (characterarray[line][i] == '^')
             {
+                // Part1 count # of splits.
                 splitCount++;
-                characterarray[line][i - 1] = '|';
-                characterarray[line][i + 1] = '|';
+                // split the beam left and right downward
                 characterarray[line + 1][i - 1] = '|';
                 characterarray[line + 1][i + 1] = '|';
-                // propagate paths down to left and right
-                // joining beams by adding them 
+                // For part 2:
+                // propagate number of paths to reach this posiotion
+                // down to left and right, joining beams by adding them 
                 pathsleadingtoposition[i - 1] += pathsleadingtoposition[i];
                 pathsleadingtoposition[i + 1] += pathsleadingtoposition[i];
                 // propagate down zero ways to reach this position
-                // meam was split!
+                // beam was split!
                 pathsleadingtoposition[i] = 0;
             }
             else
