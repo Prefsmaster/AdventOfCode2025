@@ -18,8 +18,10 @@ for (var i = 0; i < op.Count; i++)
     var subresult = op[i] == "+" ? 0UL : 1UL;
     for (var par = 0; par < ops; par++)
     {
-        if (op[i] == "+") subresult += parametersLists[par][i];
-        if (op[i] == "*") subresult *= parametersLists[par][i];
+        if (op[i] == "+") 
+            subresult += parametersLists[par][i];
+        else
+            subresult *= parametersLists[par][i];
     }
     sum += subresult;
 }
@@ -30,31 +32,31 @@ var index = lines[ops].Length-1;
 var sum2 = 0UL;
 do
 {
-    var end = index;
+    var startindex = index;
 
     // find operator and width of sub-calculation.
     while (lines[ops][index] == ' ')
         index--;
 
     var opChar = lines[ops][index];
-    var width = end - index + 1;
+    var width = startindex - index + 1;
 
     // now evaluate
     var subresult = opChar == '+' ? 0UL : 1UL;
-    for (var p = 0; p < width; p++)
+    for (var par = 0; par < width; par++)
     {
-        var parameter = 0;
+        var value = 0;
         for (var l = 0; l < ops; l++)
         {
-            if (lines[l][index+p] != ' ')
-                parameter = parameter*10+ (lines[l][index+p] - '0');
+            if (lines[l][index+par] != ' ')
+                value = value*10+ (lines[l][index+par] - '0');
         }
-        if (opChar == '+')
-            subresult += (ulong)parameter;
+        if (opChar == '+') 
+            subresult += (ulong)value;
         else
-            subresult *= (ulong)parameter;
+            subresult *= (ulong)value;
     }
     sum2 += subresult;
-    index -= 2;
+    index -= 2; // skip operator and preceding space.
 } while (index > 0);
 Console.WriteLine($"Part2: {sum2}");
