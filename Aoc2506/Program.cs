@@ -1,59 +1,54 @@
-﻿const string fileName = "input.txt";
+﻿const string fileName = "test.txt";
+
+var lines = File.ReadAllLines(fileName);
+var ops = lines.Length-1;
 
 //Part 1
-var file = new StreamReader(fileName);
-//line = file.ReadLine();
-//var parts = line.Split(' ');
-//Console.WriteLine($"{parts.Count()}");
-var v1 = file.ReadLine().Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(x => ulong.Parse(x)).ToList();
-var v2 = file.ReadLine().Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(x => ulong.Parse(x)).ToList();
-var v3 = file.ReadLine().Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(x => ulong.Parse(x)).ToList();
-var v4 = file.ReadLine().Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(x => ulong.Parse(x)).ToList();
-var op = file.ReadLine().Split(' ').Where(x => !string.IsNullOrEmpty(x)).ToList();
+
+var parametersLists = new List<ulong>[ops]; 
+for (int row =0;row< ops; row++)
+{
+    parametersLists[row] = lines[row].Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(x => ulong.Parse(x)).ToList();
+}
+var op = lines[ops].Split(' ').Where(x => !string.IsNullOrEmpty(x)).ToList();
+
 var sum = 0UL;
 for (var i = 0; i < op.Count; i++)
 {
-    if (op[i] == "+")
-        sum += v1[i] + v2[i] + v3[i] + v4[i];
-    if (op[i] == "*")
-        sum += v1[i] * v2[i] * v3[i] * v4[i];
+    var subresult = op[i] == "+" ? 0UL : 1UL;
+    for (var par = 0; par < ops; par++)
+    {
+        if (op[i] == "+") subresult += parametersLists[par][i];
+        if (op[i] == "*") subresult *= parametersLists[par][i];
+    }
+    sum += subresult;
 }
 Console.WriteLine($"Part1: {sum}");
 
 // Part 2
-var lines = File.ReadAllLines(fileName);
-
-var ops = lines.Length - 1;
 var index = lines[ops].Length-1;
 sum = 0UL;
 do
 {
     var end = index;
-    // find operator.
+
+    // find operator and width of sub calculation.
     while (lines[ops][index] == ' ')
         index--;
-    var opChar = lines[ops][index];
 
-    // cut out value strings
-    var parts = new string[ops];
-    for (var i = 0; i < ops; i++)
-    {
-        parts[i] = lines[i].Substring(index, end - index + 1);
-//        Console.WriteLine($"'{parts[i]}'");
-    }
-//    Console.WriteLine($"{opChar}");
+    var opChar = lines[ops][index];
+    var width = end - index + 1;
+
     // now evaluate
     var subresult = opChar == '+' ? 0UL : 1UL;
-    for (var p = 0; p < parts[0].Length; p++)
+    for (var p = 0; p < width; p++)
     {
         var parameter = 0;
         for (var l = 0; l < ops; l++)
         {
-            if (parts[l][p] == ' ')
-                continue;
-            parameter = parameter*10+ (parts[l][p] - '0');
+            if (lines[l][index+p] != ' ')
+                parameter = parameter*10+ (lines[l][index+p] - '0');
         }
-//Console.WriteLine($"param: {parameter}");
         if (opChar == '+')
             subresult += (ulong)parameter;
         else
@@ -61,6 +56,5 @@ do
     }
     sum += subresult;
     index -= 2;
-    // i is index of op
 } while (index > 0);
 Console.WriteLine($"Part2: {sum}");
