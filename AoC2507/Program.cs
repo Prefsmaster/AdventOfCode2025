@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
+﻿// AoC Day7: Beam Splitter
 var lines = File.ReadAllLines("input.txt");
 var lineLen = lines[0].Length;
 // Part1

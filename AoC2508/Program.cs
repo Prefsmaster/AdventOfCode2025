@@ -1,4 +1,5 @@
-﻿var lines = File.ReadAllLines("input.txt");
+﻿// AoC Day8: Connect-the-Junction-Boxes
+var lines = File.ReadAllLines("input.txt");
 
 var junctionBoxes = lines.Select(line => line.Split(',').Select(s => ulong.Parse(s)).ToArray())
     .Select(coords => new JunctionBox(coords[0], coords[1], coords[2]));
@@ -27,20 +28,18 @@ for (var i=0; i<pairsByDistance.Length; i++)
     if (g1 == null && g2 == null)
     {
         Groups.Add([.. pair.Boxes]);
-        lastConnectedBoxPair = pair; // remember last processed pair for Part 2
     }
     else
     {
         // both found? 
         if (g1 != null && g2 != null)
         {
-            // if not equal, merge the groups.
-            // Otherwise do nothing: boxes are already in 1 group
+            // if not equal, merge the groups. Otherwise do nothing: boxes are already in a group
             if (g1 != g2)
             {
                 g1.AddRange(g2);
                 Groups.Remove(g2);
-                lastConnectedBoxPair = pair; // remember last processed pair for Part 2
+                lastConnectedBoxPair = pair; // remember last connected pair for Part 2
             }
         }
         else
@@ -48,12 +47,11 @@ for (var i=0; i<pairsByDistance.Length; i++)
             // only one box found in one group. add the other box of the pair to that group.
             g1?.Add(pair.Boxes[1]);
             g2?.Add(pair.Boxes[0]);
-            lastConnectedBoxPair = pair; // remember last processed pair for Part 2
         }
     }
 }
 // multiply X coordinates of last processed pair as solution for Part 2
-Console.WriteLine($"Part2: {lastConnectedBoxPair.Boxes[0].X * lastConnectedBoxPair.Boxes[1].X}");
+Console.WriteLine($"Part 2: {lastConnectedBoxPair.Boxes[0].X * lastConnectedBoxPair.Boxes[1].X}");
 
 static List<JunctionBoxPair> CreatePairs(JunctionBox[] boxes)
 {
